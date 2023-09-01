@@ -8,9 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/", (req, res)=>{
-    res.status(200).send("hello world!");
-})
+app.use("/api/v1", authApis);
 
 app.listen(PORT , ()=>{
     console.log("listening on port: " + PORT);
