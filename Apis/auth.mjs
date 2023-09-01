@@ -13,15 +13,16 @@ const router = express.Router();
 
 router.post("/signup", async (req, res) => {
   try {
-    let { fullName, contact, email, password, dob } = req.body;
+    let { fullName, contact, email, password, dob, gender } = req.body;
 
-    if (!fullName || !contact || !email || !password || !dob) {
+    if (!fullName || !contact || !email || !password || !dob || !gender) {
       res.status(402).send({
         message: "Please enter complete information",
         data: {
           FullName: "John",
           Contact: "Doe",
           dob: "1-1-1990",
+          gender: "male / female"
           Email: "abc@abc.com",
           Password: "12345",
         },
@@ -52,13 +53,14 @@ router.post("/signup", async (req, res) => {
           contact: contact,
           dob: dob,
           email: email,
+          gender: gender,
           password: hashString,
           createdOn: new Date().getTime(),
         });
 
         res.status(200).send({
           message: "user successfully inserted",
-          user: { fullName, contact, dob, email, password, createdOn },
+          user: { fullName, contact, dob, email, password, createdOn , gender },
         });
       }
     }
@@ -105,7 +107,7 @@ router.post("/login", async (req, res) => {
 
         res.send({
           message: "Login successful",
-          user: { fullName, contact, dob, email, password, createdOn },
+          user: { fullName, contact, dob, email, password, createdOn, gender },
         });
       } else {
         res.status(401).send({ message: "Invalid credentials" });
