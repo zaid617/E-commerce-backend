@@ -19,12 +19,12 @@ router.post("/signup", async (req, res) => {
       res.status(402).send({
         message: "Please enter complete information",
         data: {
-          FullName: "John",
-          Contact: "Doe",
-          dob: "1-1-1990",
-          gender: "male / female"
-          Email: "abc@abc.com",
-          Password: "12345",
+          "FullName": "John",
+          "Contact": "Doe",
+          "dob": "1-1-1990",
+          "gender": "male / female",
+          "Email": "abc@abc.com",
+          "Password": "12345",
         },
       });
       return;
