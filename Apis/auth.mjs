@@ -60,7 +60,7 @@ router.post("/signup", async (req, res) => {
 
         res.status(200).send({
           message: "user successfully inserted",
-          user: { fullName, contact, dob, email, password, createdOn , gender },
+          user: { fullName, contact, dob, email, password, createdOn , gender , _id },
         });
       }
     }
@@ -107,7 +107,7 @@ router.post("/login", async (req, res) => {
 
         res.send({
           message: "Login successful",
-          user: { fullName, contact, dob, email, password, createdOn, gender },
+          user: { fullName, contact, dob, email, password, createdOn, gender , _id },
         });
       } else {
         res.status(401).send({ message: "Invalid credentials" });
