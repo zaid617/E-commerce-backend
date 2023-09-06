@@ -130,8 +130,6 @@ router.get("/products/:productGender/:productCategory", async (req, res) => {
 
 router.get("/products/:gender", async (req, res) => {
   let gender = req.params.gender;
-  console.log(gender);
-
   const response = PRODUCTS.find({ productGender: gender });
 
   try {
@@ -237,7 +235,7 @@ router.put("/product/:id", async (req, res) => {
   ////////////////add products to cart///////////////////////
   ///////////////////////////////////////////////////////////
 
-  router.post("/addtocart", async (req, res) => {
+  router.post("/cart", async (req, res) => {
     let {
       productName,
       productPrice,
@@ -258,7 +256,6 @@ router.put("/product/:id", async (req, res) => {
       !productName ||
       !userId ||
       !productPrice ||
-      !productQuantity ||
       !productUnit ||
       !productCompany ||
       !productCategory ||
@@ -291,23 +288,22 @@ router.put("/product/:id", async (req, res) => {
     } else {
       let productAdd = await db.collection(userId).insertOne({
         productPrice: productPrice,
-        productQuantity: productQuantity,
         productCompany: productCompany,
         productCategory: productCategory,
         productDescription: productDescription,
         productPhotoUrl: productPhotoUrl,
         productGender: productGender,
+        productName: productName,
         userName: userName,
         email: email,
         userId: userId,
-        gender: gender,
         productUnit: productUnit,
+        isDelivered: false,
         addedDate: new Date().getTime(),
         isDeleted: false,
       });
 
-      let index = await db.collection(userId).createIndex({ content: "text" });
-      const response = db.collection(userId).find({ userId: userId });
+      const response = db.collection(userId).find({ isDeleted: false });
       let results = await response.toArray();
       res
         .status(200)
@@ -322,10 +318,10 @@ router.put("/product/:id", async (req, res) => {
 ////////// getting cart products       /////////////////////
 ////////////////////////////////////////////////////////////
 
-router.get("/products/:userId", async (req, res) => {
+router.get("/cart/:userId", async (req, res) => {
   let userId = req.params.userId;
 
-  const response = db.collection(userId).find({ userId: userId });
+  const response = db.collection(userId).find({ isDeleted: false });
 
   try {
     let results = await response.toArray();
