@@ -20,9 +20,10 @@ app.use(
       "https://ecommerce0001.cyclic.cloud/api/v1",
       "http://localhost:3000",
       "http://localhost:3000/api/v1",
-      ,
+      "*",
     ],
     credentials: true,
+    Access-Control-Allow-Origin: "*"
   })
 );
 
