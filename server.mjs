@@ -18,7 +18,12 @@ app.use(cors( {
   "https://dnk-shop.netlify.app",
   "http://localhost:3000",
   "*"
-]}));
+],
+  methods: "GET,PUT,POST,DELETE",
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  credentials: true
+}));
 
 app.use("/api/v1", authApis);
 app.use("/api/v1", products);
