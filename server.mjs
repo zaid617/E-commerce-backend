@@ -1,6 +1,7 @@
 import express from "express";
 import authApis from "./apis/auth.mjs";
 import products from "./apis/products.mjs";
+import cart from "./apis/cart.mjs";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
@@ -18,8 +19,7 @@ app.use(
       "https://dnk-shop.netlify.app/api/v1",
       "https://ecommerce0001.cyclic.cloud/api/v1",
       "http://localhost:3000",
-      "http://localhost:3000/api/v1",
-      "*",
+      "http://localhost:3000/api/v1"
     ],
     credentials: true,
   })
@@ -27,6 +27,7 @@ app.use(
 
 app.use("/api/v1", authApis);
 app.use("/api/v1", products);
+app.use("/api/v1", cart);
 
 app.listen(PORT, () => {
   console.log("listening on port: " + PORT);
