@@ -222,7 +222,7 @@ router.put("/product/:id", async (req, res) => {
   } catch (error) {
     res.send({ message: "error from server in editing product" });
   }
-}) /
+}) 
   ///////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////
@@ -239,18 +239,28 @@ router.put("/product/:id", async (req, res) => {
     let {
       productName,
       productPrice,
-      productQuantity,
       productCompany,
       productCategory,
       productDescription,
-      productGender,
       productPhotoUrl,
       productUnit,
       userName,
       email,
-      gender,
+      productGender,
       userId,
     } = req.body;
+
+    console.log("productName :", productName)
+    console.log("productPrice :", productPrice)
+    console.log("productCompany :", productCompany)
+    console.log("productCategory :", productCategory)
+    console.log("productDescription :", productDescription)
+    console.log("productPhotoUrl :", productPhotoUrl)
+    console.log("productUnit :", productUnit)
+    console.log("userName :", userName)
+    console.log("email :", email)
+    console.log("productGender :", productGender)
+    console.log("userId :", userId);
 
     if (
       !productName ||
@@ -263,23 +273,21 @@ router.put("/product/:id", async (req, res) => {
       !productPhotoUrl ||
       !userName ||
       !email ||
-      !gender
+      !productGender
     ) {
       res.status(402).send({
         message: "Please enter complete information",
         data: {
           productName: "new productName",
           productPrice: "new productPrice",
-          productQuantity: "new productQuantity",
           productCompany: "new productCompany",
           productCategory: "new productCategory",
           productDescription: "new productDescription",
           productPhotoUrl: "new productPhotoUrl",
-          productGender: "new productGender",
           productUnit: "productUnit",
           userName: "userName",
           email: "email",
-          gender: "gender",
+          productGender: "gender",
           userId: "userId",
         },
       });
@@ -295,9 +303,9 @@ router.put("/product/:id", async (req, res) => {
         productGender: productGender,
         productName: productName,
         userName: userName,
+        productUnit: productUnit,
         email: email,
         userId: userId,
-        productUnit: productUnit,
         isDelivered: false,
         addedDate: new Date().getTime(),
         isDeleted: false,
@@ -314,14 +322,18 @@ router.put("/product/:id", async (req, res) => {
     res.status(500).send("product not added server error");
   });
 
+
+
 ////////////////////////////////////////////////////////////
 ////////// getting cart products       /////////////////////
 ////////////////////////////////////////////////////////////
 
 router.get("/cart/:userId", async (req, res) => {
-  let userId = req.params.userId;
 
-  const response = db.collection(userId).find({ isDeleted: false });
+  let userId = req.params.userId;
+  console.log(userId);
+
+  const response = db.collection(userId).find({isDeleted: false});
 
   try {
     let results = await response.toArray();
@@ -372,6 +384,9 @@ router.put("/cart/:id", async (req, res) => {
 router.delete("/cart/:userId/:id", async (req, res) => {
   let id = req.params.id;
   let userId = req.params.userId;
+
+  console.log("id :" , id);
+  console.log("userId :" , userId);
 
   try {
     if (id) {
