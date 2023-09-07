@@ -17,8 +17,8 @@ app.use(cors(
    origin: [
   "https://dnk-shop.netlify.app",
   "http://localhost:3000"
-],
-credentials: true,));
+]
+));
 
 app.use("/api/v1", authApis);
 app.use("/api/v1", products);
