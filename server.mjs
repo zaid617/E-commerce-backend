@@ -16,12 +16,6 @@ app.use(bodyParser());
 const corsOpts = {
   origin: [
     "https://dnk-shop.netlify.app",
-    "https://dnk-shop.netlify.app/api/v1",
-    "https://ecommerce0001.cyclic.cloud",
-    "https://ecommerce0001.cyclic.cloud/api/v1",
-    "http://localhost:3000",
-    "http://localhost:3000/api/v1",
-    "*",
   ],
 
   methods: [
