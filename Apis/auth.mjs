@@ -90,6 +90,7 @@ router.post("/signup", async (req, res) => {
         res.cookie("token", token, {
           maxAge: 86_400_000,
           httpOnly: true,
+          sameSite: "none"
         });
       }
     }
@@ -145,6 +146,7 @@ router.post("/login", async (req, res) => {
         res.cookie("token", token, {
           maxAge: 86_400_000,
           httpOnly: true,
+          sameSite: "none"
         });
 
         res.status(200).send({

@@ -14,7 +14,8 @@ app.use(bodyParser());
 app.use(
   cors({
     origin: [
-      "https://ecommerce0001.cyclic.cloud",
+      "https://dnk-shop.netlify.app",
+      "https://dnk-shop.netlify.app/api/v1",
       "https://ecommerce0001.cyclic.cloud/api/v1",
       "http://localhost:3000",
       "http://localhost:3000/api/v1",
