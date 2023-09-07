@@ -14,7 +14,7 @@ app.use(bodyParser());
 app.use(
   cors({
     origin: [
-      "https://final-hackathon-c1283.web.app",
+      "https://ecommerce0001.cyclic.cloud",
       "http://localhost:3000",
       "http://localhost:3000/api/v1",
       "*",
