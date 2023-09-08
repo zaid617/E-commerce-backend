@@ -2,6 +2,8 @@ import { db } from "../db/dbConnect.mjs";
 import express from "express";
 import { ObjectId } from "mongodb";
 
+
+const CART = db.collection("CART");
 const router = express.Router();
 
 
@@ -76,7 +78,7 @@ const router = express.Router();
 
       return;
     } else {
-      let productAdd = await db.collection(userId).insertOne({
+      let productAdd = await CART.insertOne({
         productPrice: productPrice,
         productCompany: productCompany,
         productCategory: productCategory,
@@ -88,12 +90,13 @@ const router = express.Router();
         productUnit: productUnit,
         email: email,
         userId: userId,
+        cartOwner: userId,
         isDelivered: false,
         addedDate: new Date().getTime(),
         isDeleted: false,
       });
 
-      const response = db.collection(userId).find({ isDeleted: false });
+      const response = CART.find({ cartOwner: userId });
       let results = await response.toArray();
       res
         .status(200)
@@ -115,7 +118,7 @@ router.get("/cart/:userId", async (req, res) => {
   let userId = req.params.userId;
   console.log(userId);
 
-  const response = db.collection(userId).find({isDeleted: false});
+  const response = CART.find({cartOwner: userId});
 
   try {
     let results = await response.toArray();
@@ -141,13 +144,13 @@ router.put("/cart/:id", async (req, res) => {
 
   try {
     if (id) {
-      const updateResponse = await db.collection(userId).updateOne(
+      const updateResponse = await CART.updateOne(
         { _id: new ObjectId(id) },
         {
           $set: { productUnit: productUnit },
         }
       );
-      const response = db.collection(userId).find({ userId: userId });
+      const response = CART.find({ userId: userId });
       let results = await response.toArray();
 
       res.send({ message: "product edit successfully", data: results });
@@ -172,10 +175,10 @@ router.delete("/cart/:userId/:id", async (req, res) => {
 
   try {
     if (id) {
-      const deleteResponse = await db.collection(userId).deleteOne({
-        _id: new ObjectId(id),
+      const deleteResponse = await CART.deleteOne({
+        _id: new ObjectId(id)
       });
-      const response = db.collection(userId).find({ isDeleted: false });
+      const response = CART.find({ isDeleted: false });
       let results = await response.toArray();
 
       res.send({
@@ -187,6 +190,30 @@ router.delete("/cart/:userId/:id", async (req, res) => {
     }
   } catch (error) {
     res.send({ message: "error from server in deleting product" });
+  }
+});
+
+////////////////////////////////////////////////////////////
+//////////////////////// deleting cart  ////////////////////
+////////////////////////////////////////////////////////////
+
+router.delete("/cart/:userId", async (req, res) => {
+  let userId = req.params.userId;
+  console.log("userId :" , userId);
+
+  try {
+    if (id) {
+      const deleteResponse = await CART.deleteMany({
+        cartOwner: userId
+      });
+      res.send({
+        message: "cart deleted successfully",
+      });
+    } else {
+      res.send({ message: "no product found with this id" });
+    }
+  } catch (error) {
+    res.send({ message: "error from server in deleting cart" });
   }
 });
 
