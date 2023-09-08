@@ -17,16 +17,9 @@ app.use(bodyParser());
 
 
 app.use(cors( {
-   origin: [
-  "https://dnk-shop.netlify.app",
-  "http://localhost:3000",
-  "https://api.ipify.org",
-  "*"
-],
-  methods: "GET,PUT,POST,DELETE",
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-  credentials: true
+   origin:"https://dnk-shop.netlify.app",
+   methods: "GET,PUT,POST,DELETE",
+   credentials: true
 }));
 
 app.use("/api/v1", authApis);
