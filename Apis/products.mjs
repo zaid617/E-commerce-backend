@@ -113,12 +113,10 @@ router.get("/products/:productGender/:productCategory", async (req, res) => {
 
   try {
     let results = await response.toArray();
-    res
-      .status(200)
-      .send({
-        data: results,
-        message: "getting all single category product successfully",
-      });
+    res.status(200).send({
+      data: results,
+      message: "getting all single category product successfully",
+    });
   } catch (err) {
     res.status(501).send({ message: "error in sending products from server" });
   }
@@ -222,7 +220,6 @@ router.put("/product/:id", async (req, res) => {
   } catch (error) {
     res.send({ message: "error from server in editing product" });
   }
-}) 
-
+});
 
 export default router;

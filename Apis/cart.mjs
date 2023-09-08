@@ -2,132 +2,125 @@ import { db } from "../db/dbConnect.mjs";
 import express from "express";
 import { ObjectId } from "mongodb";
 
-
 const CART = db.collection("CART");
 const router = express.Router();
 
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+/////////////     USER API'S         //////////////////////
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
 
-  ///////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////
-  /////////////     USER API'S         //////////////////////
-  ///////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
+////////////////add products to cart///////////////////////
+///////////////////////////////////////////////////////////
 
-  /////////////////////////////////////////////////////////
-  ////////////////add products to cart///////////////////////
-  ///////////////////////////////////////////////////////////
+router.post("/cart", async (req, res) => {
+  let {
+    productName,
+    productPrice,
+    productCompany,
+    productCategory,
+    productDescription,
+    productPhotoUrl,
+    productUnit,
+    userName,
+    email,
+    productGender,
+    userId,
+  } = req.body;
 
-  router.post("/cart", async (req, res) => {
-    let {
-      productName,
-      productPrice,
-      productCompany,
-      productCategory,
-      productDescription,
-      productPhotoUrl,
-      productUnit,
-      userName,
-      email,
-      productGender,
-      userId,
-    } = req.body;
+  console.log("productName :", productName);
+  console.log("productPrice :", productPrice);
+  console.log("productCompany :", productCompany);
+  console.log("productCategory :", productCategory);
+  console.log("productDescription :", productDescription);
+  console.log("productPhotoUrl :", productPhotoUrl);
+  console.log("productUnit :", productUnit);
+  console.log("userName :", userName);
+  console.log("email :", email);
+  console.log("productGender :", productGender);
+  console.log("userId :", userId);
 
-    console.log("productName :", productName)
-    console.log("productPrice :", productPrice)
-    console.log("productCompany :", productCompany)
-    console.log("productCategory :", productCategory)
-    console.log("productDescription :", productDescription)
-    console.log("productPhotoUrl :", productPhotoUrl)
-    console.log("productUnit :", productUnit)
-    console.log("userName :", userName)
-    console.log("email :", email)
-    console.log("productGender :", productGender)
-    console.log("userId :", userId);
+  if (
+    !productName ||
+    !userId ||
+    !productPrice ||
+    !productUnit ||
+    !productCompany ||
+    !productCategory ||
+    !productDescription ||
+    !productPhotoUrl ||
+    !userName ||
+    !email ||
+    !productGender
+  ) {
+    res.status(402).send({
+      message: "Please enter complete information",
+      data: {
+        productName: "new productName",
+        productPrice: "new productPrice",
+        productCompany: "new productCompany",
+        productCategory: "new productCategory",
+        productDescription: "new productDescription",
+        productPhotoUrl: "new productPhotoUrl",
+        productUnit: "productUnit",
+        userName: "userName",
+        email: "email",
+        productGender: "gender",
+        userId: "userId",
+      },
+    });
 
-    if (
-      !productName ||
-      !userId ||
-      !productPrice ||
-      !productUnit ||
-      !productCompany ||
-      !productCategory ||
-      !productDescription ||
-      !productPhotoUrl ||
-      !userName ||
-      !email ||
-      !productGender
-    ) {
-      res.status(402).send({
-        message: "Please enter complete information",
-        data: {
-          productName: "new productName",
-          productPrice: "new productPrice",
-          productCompany: "new productCompany",
-          productCategory: "new productCategory",
-          productDescription: "new productDescription",
-          productPhotoUrl: "new productPhotoUrl",
-          productUnit: "productUnit",
-          userName: "userName",
-          email: "email",
-          productGender: "gender",
-          userId: "userId",
-        },
-      });
+    return;
+  } else {
+    let productAdd = await CART.insertOne({
+      productPrice: productPrice,
+      productCompany: productCompany,
+      productCategory: productCategory,
+      productDescription: productDescription,
+      productPhotoUrl: productPhotoUrl,
+      productGender: productGender,
+      productName: productName,
+      userName: userName,
+      productUnit: productUnit,
+      email: email,
+      userId: userId,
+      cartOwner: userId,
+      isDelivered: false,
+      addedDate: new Date().getTime(),
+      isDeleted: false,
+    });
 
-      return;
-    } else {
-      let productAdd = await CART.insertOne({
-        productPrice: productPrice,
-        productCompany: productCompany,
-        productCategory: productCategory,
-        productDescription: productDescription,
-        productPhotoUrl: productPhotoUrl,
-        productGender: productGender,
-        productName: productName,
-        userName: userName,
-        productUnit: productUnit,
-        email: email,
-        userId: userId,
-        cartOwner: userId,
-        isDelivered: false,
-        addedDate: new Date().getTime(),
-        isDeleted: false,
-      });
+    const response = CART.find({ cartOwner: userId });
+    let results = await response.toArray();
+    res
+      .status(200)
+      .send({ message: "product added to cart successfully", data: results });
+    return;
+  }
 
-      const response = CART.find({ cartOwner: userId });
-      let results = await response.toArray();
-      res
-        .status(200)
-        .send({ message: "product added to cart successfully", data: results });
-      return;
-    }
-
-    res.status(500).send("product not added server error");
-  });
-
-
+  res.status(500).send("product not added server error");
+});
 
 ////////////////////////////////////////////////////////////
 ////////// getting cart products       /////////////////////
 ////////////////////////////////////////////////////////////
 
 router.get("/cart/:userId", async (req, res) => {
-
   let userId = req.params.userId;
   console.log(userId);
 
-  const response = CART.find({cartOwner: userId});
+  const response = CART.find({ cartOwner: userId });
 
   try {
     let results = await response.toArray();
-    res
-      .status(200)
-      .send({
-        data: results,
-        message: "getting all cart products successfully",
-      });
+    res.status(200).send({
+      data: results,
+      message: "getting all cart products successfully",
+    });
   } catch (err) {
     res.status(501).send({ message: "error in sending products from server" });
   }
@@ -170,13 +163,13 @@ router.delete("/cart/:userId/:id", async (req, res) => {
   let id = req.params.id;
   let userId = req.params.userId;
 
-  console.log("id :" , id);
-  console.log("userId :" , userId);
+  console.log("id :", id);
+  console.log("userId :", userId);
 
   try {
     if (id) {
       const deleteResponse = await CART.deleteOne({
-        _id: new ObjectId(id)
+        _id: new ObjectId(id),
       });
       const response = CART.find({ isDeleted: false });
       let results = await response.toArray();
@@ -199,21 +192,21 @@ router.delete("/cart/:userId/:id", async (req, res) => {
 
 router.delete("/cart/:userId", async (req, res) => {
   let userId = req.params.userId;
-  console.log("userId :" , userId);
 
   try {
-    if (id) {
-      const deleteResponse = await CART.deleteMany({
-        cartOwner: userId
-      });
-      res.send({
+    if (userId) {
+      const deleteResponse = await CART.deleteMany({ "userId" : userId });
+     if (deleteResponse) {
+        res.status(200).send({
         message: "cart deleted successfully",
       });
+     }
+
     } else {
-      res.send({ message: "no product found with this id" });
+      res.status(402).send({ message: "no product found with this id" });
     }
   } catch (error) {
-    res.send({ message: "error from server in deleting cart" });
+    res.status(501).send({ message: "error from server in deleting cart" });
   }
 });
 
