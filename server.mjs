@@ -15,7 +15,7 @@ app.use(cookieParser());
 app.use(bodyParser());
 
 app.use(cors({
-  origin: ["https://dnk-shop.netlify.app", "http://localhost:3000","*"]
+  origin: ["https://dnk-shop.netlify.app" , "http://localhost:3000" , "*"]
   ,
     credentials: true,
 })
