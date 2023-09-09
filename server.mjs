@@ -10,19 +10,21 @@ import cors from "cors";
 import path from "path";
 
 const PORT = process.env.PORT || 5001;
-
 const app = express();
-
-const corsOptions = {
-  origin: ["https://dnk-shop.netlify.app", "http://localhost:3000"], // Replace with your allowed origin(s)
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  optionsSuccessStatus: 204, // No content response for preflight requests
-  credentials: true,
-};
-app.use(cors(corsOptions));
-
 app.use(cookieParser());
 app.use(bodyParser());
+
+app.use(cors({
+
+
+  origin: ["https://dnk-shop.netlify.app", "http://localhost:3000","*"]
+  ,
+
+    credentials: true,
+
+})
+);
+
 
 app.use("/api/v1", authApis);
 app.use("/api/v1", products);
