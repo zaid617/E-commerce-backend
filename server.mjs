@@ -11,7 +11,7 @@ import path from "path";
 
 
 const app = express();
-const port = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5001;
 
 app.use(bodyParser())
 app.use(express.json());
@@ -81,6 +81,6 @@ const __dirname = path.resolve();
 app.use("/", express.static(path.join(__dirname, "./build")));
 app.use("*", express.static(path.join(__dirname, "./build")));
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Example app listening on port ${PORT}`);
 })
