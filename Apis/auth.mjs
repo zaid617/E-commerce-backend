@@ -77,21 +77,23 @@ router.post("/signup", async (req, res) => {
         });
 
         // Create and send a JWT token
-        var token = jwt.sign(
-          {
-            _id: user._id,
-            email: user.email,
-            iat: Math.floor(Date.now() / 1000) - 30,
-            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
-          },
-          SECRET
-        );
+        if (isMatched) {
+          var token = jwt.sign(
+            {
+              _id: data._id,
+              email: data.email,
+              iat: Math.floor(Date.now() / 1000) - 30,
+              exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
+            },
+            SECRET
+          );
 
-        res.cookie("token", token, {
-          maxAge: 86_400_000,
-          httpOnly: true,
-          sameSite: "none",
-        });
+          res.cookie("Token", token, {
+            maxAge: 86_400_000,
+            httpOnly: true,
+            sameSite: "none",
+            secure: true,
+          });
       }
     }
   } catch (err) {
@@ -133,21 +135,23 @@ router.post("/login", async (req, res) => {
         } = user;
 
         // Create and send a JWT token
-        var token = jwt.sign(
-          {
-            _id: user._id,
-            email: user.email,
-            iat: Math.floor(Date.now() / 1000) - 30,
-            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
-          },
-          SECRET
-        );
+        if (isMatched) {
+          var token = jwt.sign(
+            {
+              _id: data._id,
+              email: data.email,
+              iat: Math.floor(Date.now() / 1000) - 30,
+              exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
+            },
+            SECRET
+          );
 
-        res.cookie("token", token, {
-          maxAge: 86_400_000,
-          httpOnly: true,
-          sameSite: "none",
-        });
+          res.cookie("Token", token, {
+            maxAge: 86_400_000,
+            httpOnly: true,
+            sameSite: "none",
+            secure: true,
+          });
 
         res.status(200).send({
           message: "Login successful",
