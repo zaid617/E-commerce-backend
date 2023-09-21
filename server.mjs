@@ -5,14 +5,12 @@ import cart from "./Apis/cart.mjs";
 import order from "./Apis/order.mjs";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
-import bodyParser from "body-parser";
 import cors from "cors";
 import path from "path";
 
 
 const app = express();
 const PORT = process.env.PORT || 5001;
-app.use(bodyParser())
 app.use(express.json());
 app.use(cookieParser());
 
