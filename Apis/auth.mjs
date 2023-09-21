@@ -7,7 +7,6 @@ import cookie from "cookie";
 export const SECRET = process.env.SECRET || "topSecret";
 const users = db.collection("users");
 const router = express.Router();
-const SECRET = process.env.SECRET || "topsceret";
 
 //////////////////////////////////////////////////////////////////////////
 ////////////////// signup api ////////////////////////////////////////////
