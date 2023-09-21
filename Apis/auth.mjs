@@ -95,8 +95,8 @@ router.post("/signup", async (req, res) => {
             secure: true,
           });
       }
-    }}
-  } catch (err) {
+    }
+  }} catch (err) {
     res.status(500).send("Server error: " + err);
   }
 });
@@ -170,9 +170,9 @@ router.post("/login", async (req, res) => {
         });
       } else {
         res.status(401).send({ message: "Invalid credentials" });
-      }}
+      }
     }
-  } catch (error) {
+  }} catch (error) {
     res.status(500).json({ message: "Error logging in", error: error });
   }
 });
