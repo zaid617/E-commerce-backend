@@ -135,7 +135,7 @@ router.post("/login", async (req, res) => {
         } = user;
 
         // Create and send a JWT token
-        if (isMatched) {
+        if (passwordMatch) {
           var token = jwt.sign(
             {
               _id: data._id,
