@@ -33,7 +33,7 @@ router.post("/signup", async (req, res) => {
       let isExist = await users.findOne({ email: email });
 
       if (isExist) {
-        res.send({
+        res.status(402).send({
           message: "user already exists",
         });
         return;
@@ -64,23 +64,22 @@ router.post("/signup", async (req, res) => {
         res.status(200).send({
           message: "user successfully inserted",
           user: {
-            name,
-            contact,
-            dob,
-            email,
-            password,
-            createdOn,
-            gender,
-            _id,
-            isAdmin,
+            name: user.name,
+            contact: user.contact,
+            dob: user.dob,
+            email: user.email,
+            createdOn: user.createdOn,
+            gender: user.gender,
+            _id: user._id,
+            isAdmin: user.isAdmin,
           },
         });
 
         // Create and send a JWT token
           var token = jwt.sign(
             {
-              _id: data._id,
-              email: data.email,
+              _id: user._id,
+              email: user.email,
               iat: Math.floor(Date.now() / 1000) - 30,
               exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
             },
@@ -137,8 +136,8 @@ router.post("/login", async (req, res) => {
         if (passwordMatch) {
           var token = jwt.sign(
             {
-              _id: data._id,
-              email: data.email,
+              _id: _id,
+              email: email,
               iat: Math.floor(Date.now() / 1000) - 30,
               exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
             },
