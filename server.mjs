@@ -12,6 +12,7 @@ import path from "path";
 
 const app = express();
 const PORT = process.env.PORT || 5001;
+const SECRET = process.env.SECRET || "topSecret";
 app.use(bodyParser())
 app.use(express.json());
 app.use(cookieParser());
@@ -51,7 +52,7 @@ app.use("/api/v1", (req, res, next) => {
 
       if (decodedData.exp < nowDate) {
         res.status(401).send({ message: "token expired" });
-        res.cookie("Token", " ", {
+        res.cookie("token", " ", {
           maxAge: 1,
           httpOnly: true,
           sameSite: "none",

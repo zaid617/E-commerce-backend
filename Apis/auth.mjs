@@ -4,7 +4,7 @@ import { db } from "../db/dbConnect.mjs";
 import jwt from "jsonwebtoken";
 import cookie from "cookie";
 
-export const SECRET = process.env.SECRET || "topSecret";
+const SECRET = process.env.SECRET || "topSecret";
 const users = db.collection("users");
 const router = express.Router();
 
@@ -124,7 +124,6 @@ router.post("/login", async (req, res) => {
           contact,
           dob,
           email,
-          password,
           createdOn,
           gender,
           _id,
