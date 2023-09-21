@@ -77,7 +77,6 @@ router.post("/signup", async (req, res) => {
         });
 
         // Create and send a JWT token
-        if (isMatched) {
           var token = jwt.sign(
             {
               _id: data._id,
@@ -95,7 +94,7 @@ router.post("/signup", async (req, res) => {
             secure: true,
           });
       }
-    }
+    
   }} catch (err) {
     res.status(500).send("Server error: " + err);
   }
