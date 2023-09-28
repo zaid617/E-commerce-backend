@@ -3,9 +3,10 @@ import authApis from "./Apis/auth.mjs";
 import products from "./Apis/products.mjs";
 import cart from "./Apis/cart.mjs";
 import order from "./Apis/order.mjs";
-import jwt from "jsonwebtoken";
+import jwt from "jsonwebToken";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
+import cookie from "cookie"
 import cors from "cors";
 import path from "path";
 
@@ -34,6 +35,8 @@ app.use(cors({
 
 
 app.use("/api/v1", authApis);
+app.use("/api/v1", products);
+app.use("/api/v1", order);
 
 
 app.use("/api/v1", (req, res, next) => {
@@ -51,29 +54,26 @@ app.use("/api/v1", (req, res, next) => {
       const nowDate = new Date().getTime() / 1000;
 
       if (decodedData.exp < nowDate) {
-        res.status(401).send({ message: "token expired" });
-        res.cookie("token", " ", {
+        res.status(401).send({ message: "Token expired" });
+        res.cookie("Token", " ", {
           maxAge: 1,
           httpOnly: true,
           sameSite: "none",
           secure: true,
         });
       } else {
-        console.log("token approved");
+        console.log("Token approved");
 
-        req.body.token = decodedData;
+        req.body.Token = decodedData;
         next();
       }
     } else {
-      res.status(401).send("invalid token");
+      res.status(401).send("invalid Token");
     }
   });
 });
 
-
-app.use("/api/v1", products);
 app.use("/api/v1", cart);
-app.use("/api/v1", order);
 
 
 const __dirname = path.resolve();

@@ -1,7 +1,7 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import { db } from "../db/dbConnect.mjs";
-import jwt from "jsonwebtoken";
+import jwt from "jsonwebToken";
 import cookie from "cookie";
 
 const SECRET = process.env.SECRET || "topSecret";
@@ -75,8 +75,8 @@ router.post("/signup", async (req, res) => {
           },
         });
 
-        // Create and send a JWT token
-          var token = jwt.sign(
+        // Create and send a JWT Token
+          var Token = jwt.sign(
             {
               _id: user._id,
               email: user.email,
@@ -86,7 +86,7 @@ router.post("/signup", async (req, res) => {
             SECRET
           );
 
-          res.cookie("Token", token, {
+          res.cookie("Token", Token, {
             maxAge: 86_400_000,
             httpOnly: true,
             sameSite: "none",
@@ -131,9 +131,9 @@ router.post("/login", async (req, res) => {
           ip,
         } = user;
 
-        // Create and send a JWT token
+        // Create and send a JWT Token
         if (passwordMatch) {
-          var token = jwt.sign(
+          var Token = jwt.sign(
             {
               _id: _id,
               email: email,
@@ -143,7 +143,7 @@ router.post("/login", async (req, res) => {
             SECRET
           );
 
-          res.cookie("Token", token, {
+          res.cookie("Token", Token, {
             maxAge: 86_400_000,
             httpOnly: true,
             sameSite: "none",
@@ -157,7 +157,6 @@ router.post("/login", async (req, res) => {
             contact,
             dob,
             email,
-            password,
             createdOn,
             gender,
             _id,
@@ -179,8 +178,8 @@ router.post("/login", async (req, res) => {
 //////////////////////////////////////////////////////////////////////////
 
 router.post("/logout", (req, res) => {
-  // Clear the cookie containing the JWT token
-  res.clearCookie("token", {
+  // Clear the cookie containing the JWT Token
+  res.clearCookie("Token", {
     httpOnly: true,
     sameSite: "none",
     secure: true,
