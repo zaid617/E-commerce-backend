@@ -76,7 +76,7 @@ router.post("/signup", async (req, res) => {
         });
 
         // Create and send a JWT Token
-          var Token = jwt.sign(
+          var token = jwt.sign(
             {
               _id: user._id,
               email: user.email,
@@ -86,7 +86,7 @@ router.post("/signup", async (req, res) => {
             SECRET
           );
 
-          res.cookie("Token", Token, {
+          res.cookie("Token", token, {
             maxAge: 86_400_000,
             httpOnly: true,
             sameSite: "none",
@@ -133,7 +133,7 @@ router.post("/login", async (req, res) => {
 
         // Create and send a JWT Token
         if (passwordMatch) {
-          var Token = jwt.sign(
+          var token = jwt.sign(
             {
               _id: _id,
               email: email,
@@ -143,7 +143,7 @@ router.post("/login", async (req, res) => {
             SECRET
           );
 
-          res.cookie("Token", Token, {
+          res.cookie("Token", token, {
             maxAge: 86_400_000,
             httpOnly: true,
             sameSite: "none",

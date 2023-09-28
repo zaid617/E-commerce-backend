@@ -35,9 +35,6 @@ app.use(cors({
 
 
 app.use("/api/v1", authApis);
-app.use("/api/v1", products);
-app.use("/api/v1", order);
-
 
 app.use("/api/v1", (req, res, next) => {
 
@@ -62,10 +59,11 @@ app.use("/api/v1", (req, res, next) => {
           secure: true,
         });
       } else {
-        console.log("Token approved");
 
-        req.body.Token = decodedData;
+        console.log("Token approved");
+        req.body.token = decodedData;
         next();
+
       }
     } else {
       res.status(401).send("invalid Token");
@@ -74,6 +72,8 @@ app.use("/api/v1", (req, res, next) => {
 });
 
 app.use("/api/v1", cart);
+app.use("/api/v1", products);
+app.use("/api/v1", order);
 
 
 const __dirname = path.resolve();
