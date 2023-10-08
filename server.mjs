@@ -9,11 +9,12 @@ import bodyParser from "body-parser";
 import cookie from "cookie"
 import cors from "cors";
 import path from "path";
+require('dotenv').config()
 
 
 const app = express();
 const PORT = process.env.PORT || 5001;
-const SECRET = process.env.SECRET || "topSecret";
+const SECRET = process.env.SECRET;
 app.use(bodyParser())
 app.use(express.json());
 app.use(cookieParser());
@@ -36,6 +37,7 @@ app.use(cors({
 
 app.use("/api/v1", authApis);
 
+
 app.use("/api/v1", (req, res, next) => {
 
   if (!req?.cookies?.Token) {
@@ -51,7 +53,7 @@ app.use("/api/v1", (req, res, next) => {
       const nowDate = new Date().getTime() / 1000;
 
       if (decodedData.exp < nowDate) {
-        res.status(401).send({ message: "Token expired" });
+        res.status(401).send({ message: "token expired" });
         res.cookie("Token", " ", {
           maxAge: 1,
           httpOnly: true,
@@ -59,14 +61,13 @@ app.use("/api/v1", (req, res, next) => {
           secure: true,
         });
       } else {
+        console.log("token approved");
 
-        console.log("Token approved");
         req.body.token = decodedData;
         next();
-
       }
     } else {
-      res.status(401).send("invalid Token");
+      res.status(401).send("invalid token");
     }
   });
 });

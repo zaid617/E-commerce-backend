@@ -4,6 +4,7 @@ import { db } from "../db/dbConnect.mjs";
 import jwt from "jsonwebToken";
 import cookie from "cookie";
 
+
 const SECRET = process.env.SECRET || "topSecret";
 const users = db.collection("users");
 const router = express.Router();
@@ -76,22 +77,22 @@ router.post("/signup", async (req, res) => {
         });
 
         // Create and send a JWT Token
-          var token = jwt.sign(
-            {
-              _id: user._id,
-              email: user.email,
-              iat: Math.floor(Date.now() / 1000) - 30,
-              exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
-            },
-            SECRET
-          );
+        var token = jwt.sign(
+          {
+            _id: user._id,
+            email: user.email,
+            iat: Math.floor(Date.now() / 1000) - 30,
+            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
+          },
+          SECRET
+        );
 
-          res.cookie("Token", token, {
-            maxAge: 86_400_000,
-            httpOnly: true,
-            sameSite: "none",
-            secure: true,
-          });
+        res.cookie("Token", token, {
+          maxAge: 86_400_000,
+          httpOnly: true,
+          sameSite: "none",
+          secure: true,
+        });
       }
     
   }} catch (err) {
@@ -133,22 +134,23 @@ router.post("/login", async (req, res) => {
 
         // Create and send a JWT Token
         if (passwordMatch) {
-          var token = jwt.sign(
-            {
-              _id: _id,
-              email: email,
-              iat: Math.floor(Date.now() / 1000) - 30,
-              exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
-            },
-            SECRET
-          );
 
-          res.cookie("Token", token, {
-            maxAge: 86_400_000,
-            httpOnly: true,
-            sameSite: "none",
-            secure: true,
-          });
+              var token = jwt.sign(
+                {
+                  _id: data._id,
+                  email: data.email,
+                  iat: Math.floor(Date.now() / 1000) - 30,
+                  exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
+                },
+                SECRET
+              );
+
+              res.cookie("Token", token, {
+                maxAge: 86_400_000,
+                httpOnly: true,
+                sameSite: "none",
+                secure: true,
+              });
 
         res.status(200).send({
           message: "Login successful",
