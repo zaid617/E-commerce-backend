@@ -6,50 +6,37 @@ import order from "./Apis/order.mjs";
 import jwt from "jsonwebToken";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
-import cookie from "cookie"
+import cookie from "cookie";
 import cors from "cors";
 import path from "path";
-require('dotenv').config()
-
+require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 5001;
 const SECRET = process.env.SECRET;
-app.use(bodyParser())
+app.use(bodyParser());
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(cors({
-
-
-  origin: [
-    "https://dnk-shop.netlify.app",
-    "http://localhost:3000",
-    "*"
-  ]
-  ,
-
+app.use(
+  cors({
+    origin: ["https://dnk-shop.netlify.app", "http://localhost:3000", "*"],
     credentials: true,
-
-})
+  })
 );
-
 
 app.use("/api/v1", authApis);
 
-
 app.use("/api/v1", (req, res, next) => {
-
   if (!req?.cookies?.Token) {
     res.status(401).send({
       message: "include http-only credentials with every request",
     });
     return;
   }
-  
+
   jwt.verify(req.cookies.Token, SECRET, (err, decodedData) => {
     if (!err) {
-
       const nowDate = new Date().getTime() / 1000;
 
       if (decodedData.exp < nowDate) {
@@ -76,7 +63,6 @@ app.use("/api/v1", cart);
 app.use("/api/v1", products);
 app.use("/api/v1", order);
 
-
 const __dirname = path.resolve();
 
 app.use("/", express.static(path.join(__dirname, "./build")));
@@ -84,4 +70,4 @@ app.use("*", express.static(path.join(__dirname, "./build")));
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
-})
+});
