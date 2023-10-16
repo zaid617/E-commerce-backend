@@ -181,9 +181,9 @@ router.post("/login", async (req, res) => {
 
 router.post("/logout", (req, res) => {
   // Clear the cookie containing the JWT Token
-  res.clearCookie("Token", {
+  res.clearCookie("token", {
     httpOnly: true,
-    sameSite: "none",
+    sameSite: "None",
     secure: true,
   });
   // Send a response indicating successful logout
