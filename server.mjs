@@ -28,14 +28,14 @@ app.use(
 app.use("/api/v1", authApis);
 
 app.use("/api/v1", (req, res, next) => {
-  if (!req?.cookies?.Token) {
+  if (!req?.cookies?.token) {
     res.status(401).send({
       message: "include http-only credentials with every request",
     });
     return;
   }
 
-  jwt.verify(req.cookies.Token, SECRET, (err, decodedData) => {
+  jwt.verify(req.cookies.token, SECRET, (err, decodedData) => {
     if (!err) {
       const nowDate = new Date().getTime() / 1000;
 

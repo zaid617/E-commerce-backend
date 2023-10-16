@@ -87,10 +87,10 @@ router.post("/signup", async (req, res) => {
           SECRET
         );
 
-        res.cookie("Token", token, {
+        res.cookie("token", token, {
           maxAge: 86_400_000,
           httpOnly: true,
-          sameSite: "none",
+          SameSite: 'None',
           secure: true,
         });
       }
@@ -145,10 +145,10 @@ router.post("/login", async (req, res) => {
                 SECRET
               );
 
-              res.cookie("Token", token, {
+              res.cookie("token", token, {
                 maxAge: 86_400_000,
                 httpOnly: true,
-                sameSite: "none",
+                sameSite: "None",
                 secure: true,
               });
 

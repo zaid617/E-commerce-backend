@@ -1,7 +1,6 @@
 import { db } from "../db/dbConnect.mjs";
 import express from "express";
 import { ObjectId } from "mongodb";
-
 const router = express.Router();
 const PRODUCTS = db.collection("PRODUCTS");
 
